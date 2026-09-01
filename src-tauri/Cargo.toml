@@ -1,0 +1,27 @@
+[package]
+name = "easyaccounting"
+version = "0.2.0"
+description = "轻账本 · EasyAccounting —— 自用资产盘点工具（Tauri 重写版）"
+authors = ["welllhq"]
+edition = "2021"
+
+[lib]
+name = "easyaccounting_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.32", features = ["bundled"] }
+chrono = "0.4"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+opt-level = "s"
+panic = "abort"

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>轻账本 · EasyAccounting</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- 顶栏 -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true"><i></i><i></i><i></i></div>
+        <span class="brand-name">轻账本</span>
+        <span class="brand-sub">EasyAccounting</span>
+      </div>
+      <div class="topbar-right">
+        <span class="data-dir" id="dataDirLabel" title="数据目录"></span>
+        <button class="btn ghost sm" id="openDataDirBtn">数据目录</button>
+        <div class="account-box">
+          <select id="accountSelect" class="account-select" title="切换账户"></select>
+          <button class="btn ghost sm" id="createAccountBtn" title="新建账户">新建</button>
+          <button class="btn ghost sm danger-text" id="deleteAccountBtn" title="删除当前账户">删除</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="body">
+      <!-- 侧边导航 -->
+      <nav class="sidebar">
+        <button class="nav-item active" data-view="view-ledger">资产盘点</button>
+        <button class="nav-item" data-view="view-stats">数据统计</button>
+      </nav>
+
+      <!-- 主内容 -->
+      <main class="main">
+        <!-- ============ 资产盘点 ============ -->
+        <section id="view-ledger" class="view active">
+          <div class="ledger-layout">
+            <div class="card ledger-card">
+              <div class="card-head">
+                <h3>账本管理</h3>
+                <button class="btn primary sm" id="createLedgerBtn">新建账本</button>
+              </div>
+              <ul class="ledger-list" id="ledgerList"></ul>
+              <p class="empty-hint hidden" id="ledgerEmpty">还没有账本，点击右上角"新建账本"创建第一个账本</p>
+            </div>
+
+            <div class="right-col">
+              <div class="card">
+                <div class="card-head"><h3>录入资产</h3></div>
+                <form id="recordForm" class="record-form" autocomplete="off">
+                  <div class="field">
+                    <label for="recordLedger">账本</label>
+                    <select id="recordLedger"></select>
+                  </div>
+                  <div class="field">
+                    <label for="recordDate">日期</label>
+                    <input type="date" id="recordDate" />
+                  </div>
+                  <div class="field">
+                    <label for="recordAmount">金额 (¥)</label>
+                    <input type="number" id="recordAmount" step="0.01" min="0.01" placeholder="0.00" />
+                  </div>
+                  <div class="field grow">
+                    <label for="recordNote">备注</label>
+                    <input type="text" id="recordNote" placeholder="可选，如：工资到账" maxlength="100" />
+                  </div>
+                  <button type="submit" class="btn primary">添加记录</button>
+                </form>
+              </div>
+
+              <div class="card grow">
+                <div class="card-head">
+                  <h3>历史记录</h3>
+                  <div class="filters">
+                    <select id="historyLedger"><option value="">全部账本</option></select>
+                    <input type="search" id="historySearch" placeholder="搜索备注 / 账本" />
+                  </div>
+                </div>
+                <div class="table-wrap">
+                  <table id="historyTable">
+                    <thead>
+                      <tr>
+                        <th class="col-date">日期</th>
+                        <th>账本</th>
+                        <th class="num">金额</th>
+                        <th>备注</th>
+                        <th class="num col-ops">操作</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="pager">
+                  <span id="historyInfo" class="pager-info"></span>
+                  <button class="btn ghost sm" id="prevPageBtn">上一页</button>
+                  <button class="btn ghost sm" id="nextPageBtn">下一页</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 数据统计 ============ -->
+        <section id="view-stats" class="view">
+          <div class="stats-toolbar">
+            <div class="range-tabs" id="rangeTabs">
+              <button data-range="all">全部</button>
+              <button data-range="1m">近1月</button>
+              <button data-range="3m">近3月</button>
+              <button data-range="6m">近6月</button>
+              <button data-range="1y" class="active">近1年</button>
+              <button data-range="custom">自定义</button>
+            </div>
+            <div class="custom-range hidden" id="customRange">
+              <input type="date" id="rangeStart" />
+              <span>至</span>
+              <input type="date" id="rangeEnd" />
+              <button class="btn primary sm" id="applyRangeBtn">应用</button>
+            </div>
+            <div class="spacer"></div>
+            <button class="btn ghost sm" id="exportCsvBtn">导出统计 CSV</button>
+            <button class="btn ghost sm" id="exportPngBtn">导出图表 PNG</button>
+            <button class="btn ghost sm" id="backupBtn">备份数据库</button>
+          </div>
+
+          <div class="kpi-grid">
+            <div class="kpi"><p>总资产</p><h2 id="kpiTotal">--</h2></div>
+            <div class="kpi"><p>本月变动</p><h2 id="kpiMonth">--</h2></div>
+            <div class="kpi"><p>年初至今</p><h2 id="kpiYtd">--</h2></div>
+            <div class="kpi"><p>账本 / 记录</p><h2 id="kpiCount">--</h2></div>
+          </div>
+
+          <div class="chart-grid">
+            <div class="card">
+              <div class="card-head">
+                <h3>资产趋势</h3>
+                <label class="switch-label"><input type="checkbox" id="showTotal" checked /> 显示总资产线</label>
+              </div>
+              <div id="trendChart" class="chart chart-lg"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <h3>资产结构</h3>
+                <select id="pieMode">
+                  <option value="latest">最新结构</option>
+                  <option value="date">指定日期回放</option>
+                </select>
+                <input type="date" id="pieDate" class="hidden" />
+              </div>
+              <div id="pieChart" class="chart chart-lg"></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>变动分析</h3></div>
+            <div class="table-wrap">
+              <table id="changeTable">
+                <thead>
+                  <tr>
+                    <th>账本</th>
+                    <th class="num">当前值</th>
+                    <th class="num">较上次</th>
+                    <th class="num">较月初</th>
+                    <th class="num">较年初</th>
+                    <th class="num">区间最高</th>
+                    <th class="num">区间最低</th>
+                    <th class="num">区间平均</th>
+                    <th class="num">记录数</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- 无账户空状态 -->
+    <div id="emptyAccount" class="empty-account hidden">
+      <div class="empty-art" aria-hidden="true"></div>
+      <h2>还没有账户</h2>
+      <p>创建一个账户开始记录你的资产吧</p>
+      <button class="btn primary" id="emptyCreateAccountBtn">新建账户</button>
+    </div>
+  </div>
+
+  <div id="modal-root"></div>
+  <div id="toast-root"></div>
+
+  <script src="lib/echarts.min.js"></script>
+  <script src="ui.js"></script>
+  <script src="mock.js"></script>
+  <script src="stats.js"></script>
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

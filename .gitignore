@@ -1,0 +1,14 @@
+# Rust
+/target
+
+# Node
+node_modules/
+
+# 系统
+Thumbs.db
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.suo
