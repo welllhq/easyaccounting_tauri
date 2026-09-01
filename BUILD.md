@@ -57,10 +57,7 @@ cargo tauri build
 
 产物：
 
-```
-src-tauri/target/release/bundle/nsis/EasyAccounting_0.2.0_x64-setup.exe   # 安装包
-src-tauri/target/release/bundle/portable/EasyAccounting_0.2.0_x64.exe     # 便携版（直接拷走即用）
-```
+sk-1fc6a1b2f752452c966042aa082cc638
 
 > 首次构建需下载编译约 400 个 Rust crate，耗时 5-15 分钟属正常。
 
@@ -70,9 +67,9 @@ src-tauri/target/release/bundle/portable/EasyAccounting_0.2.0_x64.exe     # 便�
 
 ## 常见问题
 
-| 现象 | 处理 |
-|---|---|
-| `link.exe` 找不到 | MSVC Build Tools 未装完，重跑 winget 命令，装完重开终端 |
-| `cargo tauri` 不是命令 | 未装 Tauri CLI，或安装后未重开终端 |
-| 构建报 `WebView2` 相关错 | 系统缺 WebView2 运行时，官网下载安装 |
-| 便携版启动后找不到数据 | 确认 `data/` 与 exe 同级；exe 所在目录需可写 |
+| 现象                 | 处理                                       |
+| ------------------ | ---------------------------------------- |
+| `link.exe` 找不到     | MSVC Build Tools 未装完，重跑 winget 命令，装完重开终端 |
+| `cargo tauri` 不是命令 | 未装 Tauri CLI，或安装后未重开终端                   |
+| 构建报 `WebView2` 相关错 | 系统缺 WebView2 运行时，官网下载安装                  |
+| 便携版启动后找不到数据        | 确认 `data/` 与 exe 同级；exe 所在目录需可写          |

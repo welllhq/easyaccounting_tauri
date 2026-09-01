@@ -47,6 +47,9 @@ cargo tauri build
 
 产物位于 `src-tauri/target/release/bundle/`。
 
+> ✅ 构建状态：v0.2.0 已在 Windows x64 编译通过并完成冒烟测试（窗口正常启动/关闭），
+> 产物见 `../release/`（安装包 + 便携版 + 使用说明）。
+
 ## 数据与兼容
 
 - 数据目录：**便携优先** —— 优先使用 exe 同级 `data/` 目录（把原版 `data/` 文件夹直接拷到新 exe 旁边即可继续用）；目录不可写时退回 `%APPDATA%/EasyAccounting/data`

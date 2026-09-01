@@ -1,5 +1,8 @@
 # Rust
 /target
+src-tauri/target/
+src-tauri/gen/
+cache/
 
 # Node
 node_modules/
