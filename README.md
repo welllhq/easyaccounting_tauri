@@ -1,4 +1,4 @@
-# 注1：除了这句话以外，其他所有内容由deepseek V4 flash 生成
+> 注1：除了这句话以外，其他所有内容由deepseek V4 flash 生成
 # 轻账本 · EasyAccounting (Tauri 重写版)
 
 > 一个自用的资产盘点工具 · Tauri + ECharts 重写版
